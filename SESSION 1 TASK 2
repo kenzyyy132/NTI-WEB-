@@ -1,0 +1,69 @@
+var customerName = "kenzy";
+var category = "electronics";
+var price = 250;
+var quantity = 2;
+var coupon = "SAVE10";
+var payment = "wallet";
+
+var subtotal = price * quantity;
+
+var categoryDiscount = 0;
+if (category == "electronics") {
+  categoryDiscount = subtotal * 0.10;
+} else if (category == "clothing") {
+  categoryDiscount = subtotal * 0.05;
+} else if (category == "groceries") {
+  categoryDiscount = 0;
+} else {
+  categoryDiscount = 0;
+}
+
+var afterCategoryDiscount = subtotal - categoryDiscount;
+
+var couponDiscount = 0;
+var couponMessage = "No coupon applied";
+
+if (coupon == "SAVE10") {
+  couponDiscount = afterCategoryDiscount * 0.10;
+  couponMessage = "Coupon SAVE10 applied";
+} else if (coupon == "SAVE20") {
+  couponDiscount = afterCategoryDiscount * 0.20;
+  couponMessage = "Coupon SAVE20 applied";
+} else if (coupon == "") {
+  couponDiscount = 0;
+  couponMessage = "No coupon applied";
+} else {
+  couponDiscount = 0;
+  couponMessage = "Invalid coupon code";
+}
+
+var afterCoupon = afterCategoryDiscount - couponDiscount;
+
+var paymentDiscount = 0;
+if (payment == "wallet") {
+  paymentDiscount = afterCoupon * 0.05;
+} else if (payment == "card") {
+  paymentDiscount = afterCoupon * 0.02;
+} else {
+  paymentDiscount = 0;
+}
+
+var afterPaymentDiscount = afterCoupon - paymentDiscount;
+
+var vat = afterPaymentDiscount * 0.14;
+
+var total = afterPaymentDiscount + vat;
+
+console.log("INVOICE");
+console.log("----------------------");
+console.log("Customer: " + customerName);
+console.log("Category: " + category);
+console.log("Price: " + price);
+console.log("Quantity: " + quantity);
+console.log("Subtotal: " + subtotal.toFixed(2));
+console.log("Category Discount: -" + categoryDiscount.toFixed(2));
+console.log(couponMessage + ": -" + couponDiscount.toFixed(2));
+console.log("Payment Discount: -" + paymentDiscount.toFixed(2));
+console.log("VAT (14%): +" + vat.toFixed(2));
+console.log("----------------------");
+console.log("TOTAL: " + total.toFixed(2));
