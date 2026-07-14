@@ -1,140 +1,102 @@
-import java.util.Scanner;
+var pin = "1111";
+var balance = 600;
 
-public class ATMMachine {
+var selectedOperation = "";
+var transactionAmount = 0;
 
-    public static void main(String[] args) {
+var tries = 3;
+var correctPin = false;
 
-        Scanner scanner = new Scanner(System.in);
+while (tries > 0) {
 
-        String userPin = "1234"; 
-        double balance = 500.00;
+    var enteredPin = prompt("Enter PIN");
 
-        String selectedOperation = "";
-        double transactionAmount = 0;
+    if (enteredPin == pin) {
+        correctPin = true;
+        console.log("PIN accepted");
+        break;
+    } else {
+        tries--;
 
+        if (tries > 0) {
+            console.log("Wrong PIN");
+        } else {
+            console.log("Card blocked");
+        }
+    }
+}
 
-        int attempts = 3;
-        boolean pinCorrect = false;
-        String enteredPin;
+if (correctPin == true) {
 
-        while (attempts > 0) {
-            System.out.print("Enter your PIN: ");
-            enteredPin = scanner.nextLine();
+    var run = true;
 
-            if (enteredPin.equals(userPin)) {
-                pinCorrect = true;
-                System.out.println("PIN accepted.");
-                break;
+    while (run == true) {
+
+        var choice = prompt(
+            "1 Withdraw\n2 Deposit\n3 Check Balance\n4 Change PIN\n5 Exit"
+        );
+
+        if (choice == "1") {
+
+            selectedOperation = "Withdraw";
+
+            transactionAmount = Number(prompt("Enter amount"));
+
+            if (transactionAmount <= 0) {
+                console.log("Invalid amount");
+            } else if (transactionAmount > balance) {
+                console.log("Insufficient balance");
             } else {
-                attempts--;
-                if (attempts > 0) {
-                    System.out.println("Wrong PIN, try again. Attempts left: " + attempts);
-                } else {
-                    System.out.println("Wrong PIN.");
-                }
+                balance = balance - transactionAmount;
+                console.log("Withdraw successful");
+                console.log("Current Balance: " + balance);
             }
+
+        } else if (choice == "2") {
+
+            selectedOperation = "Deposit";
+
+            transactionAmount = Number(prompt("Enter amount"));
+
+            if (transactionAmount > 0) {
+                balance = balance + transactionAmount;
+                console.log("Deposit successful");
+                console.log("Current Balance: " + balance);
+            } else {
+                console.log("Deposit amount must be greater than zero");
+            }
+
+        } else if (choice == "3") {
+
+            selectedOperation = "Check Balance";
+
+            console.log("Current Balance: " + balance);
+
+        } else if (choice == "4") {
+
+            selectedOperation = "Change PIN";
+
+            var newPin = prompt("Enter new PIN");
+
+            if (newPin.length == 4 && !isNaN(newPin)) {
+                pin = newPin;
+                console.log("PIN changed successfully");
+            } else {
+                console.log("PIN must contain exactly 4 digits");
+            }
+
+        } else if (choice == "5") {
+
+            run = false;
+            console.log("Thank you");
+
+        } else {
+
+            console.log("Invalid choice");
+
         }
-
-        if (!pinCorrect) {
-            System.out.println("Too many wrong attempts, card blocked. Bye.");
-            return; 
-        }
-
-        boolean running = true;
-        String choice = "";
-
-        while (running == true) {
-
-            System.out.println();
-            System.out.println("----------- MAIN MENU -----------");
-            System.out.println("1. Withdraw");
-            System.out.println("2. Deposit");
-            System.out.println("3. Check Balance");
-            System.out.println("4. Change PIN");
-            System.out.println("5. Exit");
-            System.out.print("Choose an option: ");
-
-            choice = scanner.nextLine();
-
-            if (choice.equals("1")) {
-
-                selectedOperation = "WITHDRAW";
-                System.out.print("How much do you want to withdraw? ");
-                String amountStr = scanner.nextLine();
-                double amount = 0;
-
-                try {
-                    amount = Double.parseDouble(amountStr);
-                } catch (Exception e) {
-                    System.out.println("That's not a valid number.");
-                    continue; 
-                }
-
-                transactionAmount = amount;
-
-                if (amount <= 0) {
-                    System.out.println("Amount has to be more than 0!");
-                } else if (amount > balance) {
-                    System.out.println("You don't have enough money. Balance: " + balance);
-                } else {
-                    balance = balance - amount;
-                    System.out.println("Here is your cash: " + amount);
-                    System.out.println("Balance now: " + balance);
-                }
-
-            }
-            else if (choice.equals("2")) {
-
-                selectedOperation = "DEPOSIT";
-                System.out.print("How much do you want to deposit? ");
-                double amount = Double.parseDouble(scanner.nextLine());
-                transactionAmount = amount;
-
-                if (amount <= 0) {
-                    System.out.println("Deposit amount must be greater than 0.");
-                } else {
-                    balance = balance + amount;
-                    System.out.println("Deposit successful!");
-                    System.out.println("Balance now: " + balance);
-                }
-
-            }
-            else if (choice.equals("3")) {
-
-                selectedOperation = "CHECK_BALANCE";
-                System.out.println("Balance: " + balance);
-
-            }
-            else if (choice.equals("4")) {
-
-                selectedOperation = "CHANGE_PIN";
-                System.out.print("Confirm your current pin first: ");
-                String checkPin = scanner.nextLine();
-
-                if (checkPin.equals(userPin) == false) {
-                    System.out.println("Pin is wrong, can't change it.");
-                } else {
-                    System.out.print("Ok, type your new 4 digit pin: ");
-                    String newPin = scanner.nextLine();
-
-                    if (newPin.length() == 4 && newPin.matches("[0-9][0-9][0-9][0-9]")) {
-                        userPin = newPin;
-                        System.out.println("Pin changed! don't forget it lol");
-                    } else {
-                        System.out.println("That's not 4 digits, pin not changed.");
-                    }
-                }
-
-            }
-            else if (choice.equals("5")) {
-                running = false;
-                System.out.println(" goodbye");
-            }
-            else {
-                System.out.println("not option.");
-            }
-
-        } 
+    }
+}
 
         scanner.close();
 
