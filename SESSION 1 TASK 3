@@ -1,0 +1,48 @@
+var studentName = "kenzy";
+var attendance = 80;
+var midtermScore = 70;
+var finalScore = 85;
+var assignmentScore = 90;
+var tuitionStatus = "paid";
+
+var requiredAttendance = 75;
+
+if (tuitionStatus != "paid") {
+  console.log("Result cannot be shown, tuition is not paid.");
+} else {
+
+  var totalScore = (midtermScore * 0.3) + (finalScore * 0.5) + (assignmentScore * 0.2);
+
+  var letterGrade = "";
+  if (totalScore >= 90) {
+    letterGrade = "A";
+  } else if (totalScore >= 80) {
+    letterGrade = "B";
+  } else if (totalScore >= 70) {
+    letterGrade = "C";
+  } else if (totalScore >= 60) {
+    letterGrade = "D";
+  } else {
+    letterGrade = "F";
+  }
+
+  var status = "";
+  if (attendance < requiredAttendance) {
+    status = "Fail";
+    letterGrade = "F";
+  } else if (totalScore < 60) {
+    status = "Fail";
+  } else {
+    status = "Pass";
+  }
+
+  console.log("STUDENT REPORT");
+  console.log("Name: " + studentName);
+  console.log("Attendance: " + attendance + "%");
+  console.log("Midterm Score: " + midtermScore);
+  console.log("Final Score: " + finalScore);
+  console.log("Assignment Score: " + assignmentScore);
+  console.log("Total Score: " + totalScore.toFixed(2));
+  console.log("Letter Grade: " + letterGrade);
+  console.log("Status: " + status);
+}
