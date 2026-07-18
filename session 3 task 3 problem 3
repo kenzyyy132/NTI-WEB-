@@ -1,9 +1,17 @@
-console.log("Line 1");
+function loadData(callback) {
+    console.log("Loading data...");
 
-setTimeout(function() {
-    console.log("Line 3 (Delayed)");
-}, 2000);
+    setTimeout(function() {
+        console.log("Data loaded successfully");
 
-console.log("Line 2");
+        callback();
+    }, 2000);
+}
 
-console.log("Line 4");
+
+function displayData() {
+    console.log("Displaying data");
+}
+
+
+loadData(displayData);
