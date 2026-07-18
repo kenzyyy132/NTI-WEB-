@@ -1,0 +1,17 @@
+function loadData(callback) {
+    console.log("Loading data...");
+
+    setTimeout(function() {
+        console.log("Data loaded successfully");
+
+        callback();
+    }, 2000);
+}
+
+
+function displayData() {
+    console.log("Displaying data");
+}
+
+
+loadData(displayData);
