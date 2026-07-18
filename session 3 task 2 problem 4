@@ -1,0 +1,11 @@
+function sendMessage(message, delay) {
+    setTimeout(function() {
+        console.log(message);
+    }, delay);
+}
+
+console.log("Sending message...");
+
+sendMessage("Hello, your message has arrived!", 2000);
+
+console.log("Waiting...");
