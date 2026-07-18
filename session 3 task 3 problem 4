@@ -1,0 +1,36 @@
+function login(username, password, callback) {
+
+    console.log("Checking login...");
+
+    setTimeout(function() {
+
+        if (username === "admin" && password === "1234") {
+            callback(true);
+        } 
+        else {
+            callback(false);
+        }
+
+    }, 1000);
+}
+
+
+function loginResult(success) {
+
+    if (success) {
+        console.log("Login successful");
+
+        nextStep();
+    } 
+    else {
+        console.log("Login failed");
+    }
+}
+
+
+function nextStep() {
+    console.log("Opening dashboard...");
+}
+
+
+login("admin", "1234", loginResult);
