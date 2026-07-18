@@ -1,0 +1,14 @@
+function firstFunction() {
+    console.log("First function executed");
+}
+
+function secondFunction() {
+    console.log("Second function executed");
+    firstFunction();
+}
+
+console.log("Program starts");
+
+secondFunction();
+
+console.log("Program ends");
