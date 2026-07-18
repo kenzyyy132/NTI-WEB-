@@ -1,0 +1,17 @@
+function getNumber() {
+    return 10;
+}
+
+function doubleNumber(num) {
+    return num * 2;
+}
+
+function printResult() {
+    let number = getNumber();
+    let doubled = doubleNumber(number);
+
+    console.log("Original number:", number);
+    console.log("Doubled number:", doubled);
+}
+
+printResult();
