@@ -1,36 +1,12 @@
-function login(username, password, callback) {
+console.log("Start");
 
-    console.log("Checking login...");
+setTimeout(function() {
+    console.log("Async Task");
+}, 0);
 
-    setTimeout(function() {
 
-        if (username === "admin" && password === "1234") {
-            callback(true);
-        } 
-        else {
-            callback(false);
-        }
-
-    }, 1000);
+for (let i = 1; i <= 3; i++) {
+    console.log("Loop:", i);
 }
 
-
-function loginResult(success) {
-
-    if (success) {
-        console.log("Login successful");
-
-        nextStep();
-    } 
-    else {
-        console.log("Login failed");
-    }
-}
-
-
-function nextStep() {
-    console.log("Opening dashboard...");
-}
-
-
-login("admin", "1234", loginResult);
+console.log("End");
