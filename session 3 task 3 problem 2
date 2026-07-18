@@ -1,22 +1,13 @@
-function calculator(num1, num2, callback) {
-    let result = callback(num1, num2);
-    console.log("Result:", result);
-}
+console.log("A");
 
+setTimeout(function() {
+    console.log("B");
+}, 0);
 
-function add(a, b) {
-    return a + b;
-}
+console.log("C");
 
-function subtract(a, b) {
-    return a - b;
-}
+setTimeout(function() {
+    console.log("D");
+}, 0);
 
-function multiply(a, b) {
-    return a * b;
-}
-
-
-calculator(10, 5, add);
-calculator(10, 5, subtract);
-calculator(10, 5, multiply);
+console.log("E");
