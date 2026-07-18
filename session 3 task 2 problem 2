@@ -1,0 +1,15 @@
+function printNumbers() {
+    let number = 1;
+
+    let interval = setInterval(function() {
+        console.log(number);
+
+        number++;
+
+        if (number > 5) {
+            clearInterval(interval);
+        }
+    }, 1000);
+}
+
+printNumbers();
