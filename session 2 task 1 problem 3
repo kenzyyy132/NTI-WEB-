@@ -1,0 +1,13 @@
+function add(a, b) {
+    return a + b;
+}
+
+function multiply(a, b) {
+    return a * b;
+}
+
+let sum = add(5, 3);
+console.log("Addition:", sum);
+
+let result = multiply(sum, 2);
+console.log("Multiplication:", result);
