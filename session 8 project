@@ -1,0 +1,393 @@
+Library Book Management API
+
+📂 Project Structure:
+
+library_api/
+│
+├── books.json
+│
+└── server.js
+
+
+
+========================
+books.json
+========================
+
+[
+  {
+    "id": 1,
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "price": 450,
+    "available": true
+  }
+]
+
+
+
+========================
+server.js
+========================
+
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+
+
+const filePath = path.join(__dirname, "books.json");
+
+
+// Read books from JSON file
+function readBooks() {
+    try {
+        const data = fs.readFileSync(filePath, "utf-8");
+        return JSON.parse(data);
+
+    } catch (error) {
+        return [];
+    }
+}
+
+
+// Save books to JSON file
+function saveBooks(books) {
+
+    fs.writeFileSync(
+        filePath,
+        JSON.stringify(books, null, 2)
+    );
+
+}
+
+
+// Send JSON response
+function sendResponse(res, statusCode, data) {
+
+    res.writeHead(statusCode, {
+        "Content-Type": "application/json"
+    });
+
+    res.end(JSON.stringify(data));
+
+}
+
+
+// Create Server
+const server = http.createServer((req, res) => {
+
+    const url = req.url;
+    const method = req.method;
+
+
+
+    // ========================
+    // GET ALL BOOKS
+    // GET /books
+    // ========================
+
+    if (method === "GET" && url === "/books") {
+
+
+        const books = readBooks();
+
+        sendResponse(
+            res,
+            200,
+            books
+        );
+
+
+    }
+
+
+
+    // ========================
+    // ADD NEW BOOK
+    // POST /books
+    // ========================
+
+    else if (method === "POST" && url === "/books") {
+
+
+        let body = "";
+
+
+        req.on("data", chunk => {
+
+            body += chunk;
+
+        });
+
+
+        req.on("end", () => {
+
+            try {
+
+
+                const bookData = JSON.parse(body);
+
+
+                const books = readBooks();
+
+
+                const newBook = {
+
+                    id:
+                    books.length > 0
+                    ? books[books.length - 1].id + 1
+                    : 1,
+
+                    title: bookData.title,
+
+                    author: bookData.author,
+
+                    price: bookData.price,
+
+                    available: bookData.available
+
+                };
+
+
+                books.push(newBook);
+
+
+                saveBooks(books);
+
+
+                sendResponse(
+                    res,
+                    201,
+                    newBook
+                );
+
+
+            } catch(error) {
+
+
+                sendResponse(
+                    res,
+                    400,
+                    {
+                        message: "Invalid JSON format"
+                    }
+                );
+
+
+            }
+
+        });
+
+
+    }
+
+
+
+    // ========================
+    // DELETE BOOK
+    // DELETE /books/:id
+    // ========================
+
+    else if (
+        method === "DELETE" &&
+        url.startsWith("/books/")
+    ) {
+
+
+        const id = Number(
+            url.split("/")[2]
+        );
+
+
+        const books = readBooks();
+
+
+        const index = books.findIndex(
+            book => book.id === id
+        );
+
+
+        if (index === -1) {
+
+
+            sendResponse(
+                res,
+                404,
+                {
+                    message: "Book not found"
+                }
+            );
+
+
+        } else {
+
+
+            const deletedBook =
+            books.splice(index, 1);
+
+
+            saveBooks(books);
+
+
+            sendResponse(
+                res,
+                200,
+                {
+                    message: "Book deleted successfully",
+                    book: deletedBook[0]
+                }
+            );
+
+
+        }
+
+
+    }
+
+
+
+    // ========================
+    // INVALID ROUTE
+    // ========================
+
+    else {
+
+
+        sendResponse(
+            res,
+            404,
+            {
+                message: "Route not found"
+            }
+        );
+
+
+    }
+
+
+});
+
+
+
+// Start Server
+
+server.listen(3000, () => {
+
+    console.log(
+        "Server running on port 3000"
+    );
+
+});
+
+
+
+========================
+RUN PROJECT
+========================
+
+Open terminal:
+
+node server.js
+
+
+Server:
+
+http://localhost:3000
+
+
+
+========================
+API TESTING
+========================
+
+
+1) GET ALL BOOKS
+
+Method:
+
+GET
+
+URL:
+
+/books
+
+
+Response:
+
+[
+  {
+    "id":1,
+    "title":"Clean Code",
+    "author":"Robert C. Martin",
+    "price":450,
+    "available":true
+  }
+]
+
+
+
+------------------------
+
+
+
+2) ADD NEW BOOK
+
+Method:
+
+POST
+
+URL:
+
+/books
+
+
+Body:
+
+{
+  "title":"JavaScript: The Good Parts",
+  "author":"Douglas Crockford",
+  "price":300,
+  "available":true
+}
+
+
+Response:
+
+{
+  "id":2,
+  "title":"JavaScript: The Good Parts",
+  "author":"Douglas Crockford",
+  "price":300,
+  "available":true
+}
+
+
+
+------------------------
+
+
+
+3) DELETE BOOK
+
+Method:
+
+DELETE
+
+URL:
+
+/books/2
+
+
+Response:
+
+{
+  "message":"Book deleted successfully",
+  "book":{
+    "id":2,
+    "title":"JavaScript: The Good Parts",
+    "author":"Douglas Crockford",
+    "price":300,
+    "available":true
+  }
+}
+
