@@ -15,12 +15,12 @@ function getProduct(id) {
     });
 }
 
-// Example 1: Existing product
+
 getProduct(2)
     .then(product => console.log(product))
     .catch(error => console.log(error));
 
-// Example 2: Invalid product
+
 getProduct(5)
     .then(product => console.log(product))
     .catch(error => console.log(error));
