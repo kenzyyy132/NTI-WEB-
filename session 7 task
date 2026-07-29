@@ -1,0 +1,225 @@
+Student Grades Manager
+
+Folder Structure:
+
+student_grades_manager/
+│
+├── data/
+│   └── grades.json
+│
+├── modules/
+│   ├── add.grade.js
+│   ├── delete.grade.js
+│   ├── read.grades.js
+│   ├── update.grade.js
+│   └── save.grades.js
+│
+└── main.js
+
+
+
+========================
+data/grades.json
+========================
+
+[
+    {
+        "id": 1,
+        "student": "Ahmed",
+        "subject": "Math",
+        "grade": 90
+    }
+]
+
+
+
+========================
+modules/save.grades.js
+========================
+
+const fs = require("fs");
+
+function saveGrades(grades) {
+
+    fs.writeFileSync(
+        "./data/grades.json",
+        JSON.stringify(grades, null, 2)
+    );
+
+}
+
+module.exports = saveGrades;
+
+
+
+========================
+modules/add.grade.js
+========================
+
+const fs = require("fs");
+const saveGrades = require("./save.grades");
+
+function addGrade(student, subject, grade) {
+
+    const data = fs.readFileSync(
+        "./data/grades.json",
+        "utf-8"
+    );
+
+    const grades = JSON.parse(data);
+
+    const newGrade = {
+        id: grades.length + 1,
+        student,
+        subject,
+        grade
+    };
+
+    grades.push(newGrade);
+
+    saveGrades(grades);
+
+    console.log("Grade added successfully");
+
+}
+
+module.exports = addGrade;
+
+
+
+========================
+modules/read.grades.js
+========================
+
+const fs = require("fs");
+
+function readGrades() {
+
+    const data = fs.readFileSync(
+        "./data/grades.json",
+        "utf-8"
+    );
+
+    const grades = JSON.parse(data);
+
+    console.log("Student Grades:");
+
+    grades.forEach(item => {
+        console.log(
+            `${item.id} - ${item.student} - ${item.subject} : ${item.grade}`
+        );
+    });
+
+}
+
+module.exports = readGrades;
+
+
+
+========================
+modules/delete.grade.js
+========================
+
+const fs = require("fs");
+const saveGrades = require("./save.grades");
+
+function deleteGrade(value) {
+
+    const data = fs.readFileSync(
+        "./data/grades.json",
+        "utf-8"
+    );
+
+    let grades = JSON.parse(data);
+
+
+    grades = grades.filter(item =>
+        item.id !== value &&
+        item.student !== value
+    );
+
+
+    saveGrades(grades);
+
+    console.log("Grade deleted successfully");
+
+}
+
+module.exports = deleteGrade;
+
+
+
+========================
+modules/update.grade.js
+========================
+
+const fs = require("fs");
+const saveGrades = require("./save.grades");
+
+
+function updateGrade(id, newGrade) {
+
+    const data = fs.readFileSync(
+        "./data/grades.json",
+        "utf-8"
+    );
+
+
+    const grades = JSON.parse(data);
+
+
+    const student = grades.find(
+        item => item.id === id
+    );
+
+
+    if (student) {
+
+        student.grade = newGrade;
+
+        saveGrades(grades);
+
+        console.log("Grade updated successfully");
+
+    } else {
+
+        console.log("Student not found");
+
+    }
+
+}
+
+
+module.exports = updateGrade;
+
+
+
+========================
+main.js
+========================
+
+const addGrade = require("./modules/add.grade");
+const deleteGrade = require("./modules/delete.grade");
+const readGrades = require("./modules/read.grades");
+const updateGrade = require("./modules/update.grade");
+
+
+// Add grades
+addGrade("Sara", "English", 85);
+addGrade("Ali", "Science", 95);
+
+
+// Read grades
+readGrades();
+
+
+// Update grade
+updateGrade(1, 100);
+
+
+// Delete grade
+deleteGrade(2);
+
+
+// Show final data
+readGrades();
