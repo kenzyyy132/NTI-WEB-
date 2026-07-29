@@ -1,0 +1,128 @@
+Project 2: Student Gradebook
+
+Folder Structure:
+
+Gradebook/
+│
+├── index.js
+│
+├── data/
+│   └── students.js
+│
+└── modules/
+    ├── addStudent.js
+    ├── calculateAverage.js
+    ├── filterPassed.js
+    └── listStudents.js
+
+
+========================
+data/students.js
+========================
+
+const students = [];
+
+module.exports = students;
+
+
+========================
+modules/addStudent.js
+========================
+
+const students = require("../data/students");
+
+function addStudent(name, grades) {
+
+    students.push({
+        name,
+        grades
+    });
+
+    console.log(`${name} added`);
+}
+
+module.exports = addStudent;
+
+
+========================
+modules/calculateAverage.js
+========================
+
+function calculateAverage(grades) {
+
+    const sum = grades.reduce(
+        (total, grade) => total + grade,
+        0
+    );
+
+    return sum / grades.length;
+}
+
+module.exports = calculateAverage;
+
+
+========================
+modules/listStudents.js
+========================
+
+const students = require("../data/students");
+const calculateAverage = require("./calculateAverage");
+
+function listStudents() {
+
+    console.log("Students:");
+
+    students.forEach(student => {
+
+        const avg = calculateAverage(student.grades);
+
+        console.log(
+            `${student.name}: Average = ${avg}`
+        );
+
+    });
+}
+
+module.exports = listStudents;
+
+
+========================
+modules/filterPassed.js
+========================
+
+const students = require("../data/students");
+const calculateAverage = require("./calculateAverage");
+
+function filterPassed() {
+
+    const passedStudents = students.filter(student => {
+        return calculateAverage(student.grades) >= 60;
+    });
+
+    console.log("Passed Students:");
+
+    passedStudents.forEach(student => {
+        console.log(student.name);
+    });
+}
+
+module.exports = filterPassed;
+
+
+========================
+index.js
+========================
+
+const addStudent = require("./modules/addStudent");
+const listStudents = require("./modules/listStudents");
+const filterPassed = require("./modules/filterPassed");
+
+
+addStudent("Ahmed", [80, 90, 70]);
+addStudent("Sara", [50, 40, 60]);
+addStudent("Ali", [100, 90, 95]);
+
+
+listStudents();
+
+filterPassed();
