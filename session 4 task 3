@@ -1,0 +1,33 @@
+function sendVerificationEmail(email) {
+    return new Promise((resolve, reject) => {
+        console.log("Sending verification email...");
+
+        setTimeout(() => {
+            resolve("Email sent successfully");
+        }, 2000); // Simulate a 2-second delay
+    });
+}
+
+
+async function registerUser(name, email) {
+    try {
+        // Validate input
+        if (!name || !email) {
+            throw new Error("Name and email are required");
+        }
+
+       
+        const message = await sendVerificationEmail(email);
+        console.log(message);
+
+        console.log("User registered successfully");
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+registerUser("Kenzy", "kenzy1818@gmail.com");
+
+
+// registerUser("", "kenzy1818@gmail.com");
